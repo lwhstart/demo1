@@ -1,6 +1,7 @@
 package demo1;
 
 public class aaaa {
+	int a =10;
 /*	long a[] =new long[10];
 	public static void main(String[] args) {
 		System.out.println(a[6]);

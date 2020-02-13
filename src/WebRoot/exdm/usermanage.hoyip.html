@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	
+    <title>用户信息 管理</title>
+<%# HoyiLib() #%>
+	
+	<script type="text/javascript" src="/js/hoyi-req.js"></script>
+	<script type="text/javascript" src="/js/hoyi-req-serverpost-v.3.17.js"></script>
+	
+	<script type="text/javascript">
+
+		var curindex = 1;
+		var currentid;
+		var currentname;
+		function pgc(index) {
+			 curindex = index;
+			 var filter = $('#txfilter').val();
+			 var pdata = {
+							"behavior":"GetUser",
+							"pgindex":index,
+							"filter":filter
+						};
+			HOYI_POST(pdata, function(data, status){
+				 $('#repuser_parent').empty().append(data);
+			});		
+		}
+		
+		function ADD(){
+			$('#addmodallabel').text("添加用户信息");
+		    $('#modiModal input').each(function(idx, item){
+		        $(item).val('');
+		    });
+            
+		    $('#btnModiSubmits').attr('OnHoyiClick', 'AddUser');
+		    $("#btnModiSubmits").text("添加");
+		    $('#modiModal').modal();
+		}
+
+		function MODI( userid,  username,  usertype,  createtime,  notes ) {
+
+			$('#addmodallabel').text("修改用户信息:" + username);
+			$('#userid').val(userid);
+			$('#username').val(username);
+			$('#usertype').val(usertype);
+			$('#createtime').val(createtime);
+			$('#notes').val(notes);
+			
+			
+			$("#btnModiSubmits").text("修改");
+			$('#btnModiSubmits').attr('OnHoyiClick', 'UPDATEBYID');
+
+			$('#modiModal').modal("show");
+		}
+		
+		function DEL(id, name) {
+			currentid = id;
+			currentname = name;
+
+			$('#userid').val(id);
+			$('#myModal').modal("show");
+			$("#myModalLabel").text("删除");
+			$("#modal-body").text("你确定要删除用户信息：" + currentname);
+		}
+		
+	</script>
+</head>
+<body>
+	<!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div id="modal-body" class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnDelete"  ServerCtrl="true" OnHoyiClick="DELETE" class="btn btn-primary">确定删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add,Modi Modal -->
+    <div class="modal fade" id="modiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addmodallabel">Modal title</h4>
+                </div>
+                <div id="addmodalbody" class="modal-body">
+                    <form id="modiaddform" class="form-horizontal">
+                        
+						
+                        <div class="form-group" style="display:none;">
+                            <input type="text" name="userid" id="userid" placeholder="" class="form-control col-xs-10 col-sm-5">
+                        </div>
+							
+					
+						
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户信息名称</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="username" id="username" placeholder="" required="" class="form-control col-xs-10 col-sm-5" >
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="space-4"></div>
+							
+						
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户信息类型</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="usertype" id="usertype" placeholder="" class="form-control col-xs-10 col-sm-5" >
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="space-4"></div>
+						
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 创建时间</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="createtime" id="createtime" placeholder="" class="form-control col-xs-10 col-sm-5" >
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="space-4"></div>
+						
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 备注</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="notes" id="notes" placeholder="" class="form-control col-xs-10 col-sm-5" >
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="space-4"></div>
+							
+							
+                        <div class="modal-footer">
+                            <button id="btnModiSubmits" class="btn btn-primary"  OnBeforeClick="validateForm('#modiaddform');" ServerCtrl="true" OnHoyiClick="AddUser">添加</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+            	</div>
+            </div>
+        </div>
+    </div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="btn-group" role="group" aria-label="...">
+				<a class="btn btn-default" onclick="ADD();"> <span
+					class="glyphicon glyphicon-plus" style="color: green;"
+					aria-hidden="true"></span> 添加用户信息
+				</a>
+				<div class="input-group" style="width: 30%; margin-left: 70%;">
+					<input type="text" class="form-control" id="txfilter"
+						name="locfilter" placeholder="输入查询条件"> <span
+						class="input-group-btn">
+						<button class="btn btn-default" type="button"
+							onclick="pgc(1);">查询</button>
+					</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<table class="table table-border" id="repuser_parent">
+		<hoyip:Repeater id="repuser">
+			<HeaderTemplate>
+			<thead>
+				<tr>
+					<th>用户信息名称</th>
+					<th>用户信息类型</th>
+					<th>创建时间</th>
+					<th>备注</th>
+					
+					<th></th>
+				</tr>
+			</thead>
+			</HeaderTemplate>
+			<tbody>
+			<ItemTemplate>
+					<tr id="tr{# userid #}">
+							
+						 <td>{# username #}</td>
+						 <td>{# usertype #}</td>
+						 <td>{# createtime #}</td>
+						 <td>{# notes #}</td>
+						
+					<td>
+						<a class="label label-success" style="padding:4px;"  
+						onclick="MODI('{# userid #}','{# username #}','{# usertype #}','{# createtime #}','{# notes #}')">
+							<span class="glyphicon glyphicon-pencil" style="color:white;" aria-hidden="true"></span>  
+						</a>
+						<a class="label label-danger" style="padding:4px 5px 4px 5px; margin-left: 16px;"  
+						onclick="DEL('{# userid #}','{# username #}');" >
+							<span class="glyphicon glyphicon-trash" style="color:white;" aria-hidden="true" ></span>
+						</a>
+					</td>
+				</tr>
+			</ItemTemplate>
+			</tbody>
+			<FooterTemplate>
+				<tfoot>
+					<tr>
+						<td colspan="20" style="text-align: right;">
+							<ul id="pages" class="pagination">
+								<li><a onclick="pgc(1)" href="#">&lt;&lt;</a></li> 
+								<Paging> 
+								<PagiCurrent><li><a style="background-color:#dddddd; color:white;" onclick="pgc({# pageindex #})" href="#">{# pageindex #}</a></li></PagiCurrent> 
+								<PagiCustom><li><a onclick="pgc({# pageindex #})" href="#">{# pageindex #}</a></li></PagiCustom> 
+								</Paging>
+								<li><a onclick="pgc({# pagecount #})" href="#">&gt;&gt;</a></li>  
+							</ul>
+						</td>
+					</tr>
+				</tfoot>
+			</FooterTemplate>
+		</hoyip:Repeater>
+	</table>
+</body>
+</html>

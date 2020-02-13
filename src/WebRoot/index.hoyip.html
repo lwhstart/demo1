@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hoyi Demo</title>
+<%# HoyiLib() #%>
+<script type="text/javascript" src="/js/hoyi-req.js"></script>
+	<script type="text/javascript" src="/js/hoyi-req-serverpost-v.3.17.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#btn1').click(function(){
+			var pdata = {
+					behavior:"GetInfos",
+					"name":$('#input1').val()
+			};
+			HOYI_POST(pdata,function(rdata,status){
+				$('#input1').val(rdata.data);
+			})
+		})
+	});
+</script>
+</head>
+<body>
+	<p> Hello girl.!</p>
+	<p><%# GetName() #%></p>
+	<input id="input1" value="123">
+	<input type="button" id="btn1" value="click me"/>
+<input id="input2" value="222" />
+<input type="button" id="btn2" value="click me" ServerCtrl="true" OnHoyiClick="GetServInfos" />
+</body>
+</html>
